@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ChangeEvent, type KeyboardEvent } from "react";
 import {
   Card,
   CardContent,
@@ -224,9 +224,9 @@ export default function WorkplacePractice() {
                 <div className="wp-input-area">
                   <Textarea
                     value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setUserInput(e.target.value)}
                     placeholder="Type your response…"
-                    onKeyDown={(e) => {
+                    onKeyDown={(e: KeyboardEvent<HTMLTextAreaElement>) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
                         sendMessage();
