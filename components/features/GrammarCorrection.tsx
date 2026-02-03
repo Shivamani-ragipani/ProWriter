@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { storage } from "@/lib/storage";
 import { useToast } from "@/hooks/use-toast";
+import "../styles/GrammarCorrection.css";
 
 export default function GrammarCorrection() {
   const [inputText, setInputText] = useState("");
@@ -62,43 +63,30 @@ export default function GrammarCorrection() {
       });
 
       const data = await response.json();
-
       if (data.success) {
         setResult(data.data);
         toast({
           title: "Done!",
           description: "Your text has been improved ✨",
         });
-      } else {
-        throw new Error(data.error);
       }
-    } catch (err: any) {
-      toast({
-        title: "Something went wrong",
-        description: err.message,
-        variant: "destructive",
-      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 space-y-8">
-      
-      {/* 🔥 HERO HEADER */}
-      <div className="text-center space-y-3">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight flex justify-center items-center gap-2">
-          <Sparkles className="text-primary" />
-          Grammar Correction
+    <div className="gc-container">
+      <div className="gc-hero">
+        <h1 className="gc-title">
+          <Sparkles /> Grammar Correction
         </h1>
-        <p className="text-muted-foreground max-w-xl mx-auto">
+        <p className="gc-subtitle">
           Turn rough thoughts into clear, professional English in seconds.
         </p>
       </div>
 
-      {/* INPUT CARD */}
-      <Card className="shadow-lg border-muted/50">
+      <Card className="gc-card">
         <CardHeader>
           <CardTitle>Your Text</CardTitle>
           <CardDescription>
@@ -106,17 +94,18 @@ export default function GrammarCorrection() {
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="space-y-6">
+        <CardContent className="gc-content">
           <Textarea
-            placeholder="Type or paste your text here..."
             value={inputText}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setInputText(e.target.value)}
-            className="min-h-[180px] text-base focus-visible:ring-2 focus-visible:ring-primary/50"
+            placeholder="Type or paste your text here..."
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+              setInputText(e.target.value)
+            }
+            className="gc-textarea"
           />
 
-          {/* OPTIONS */}
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="space-y-2">
+          <div className="gc-options">
+            <div>
               <Label>Correction Mode</Label>
               <Select value={mode} onValueChange={setMode}>
                 <SelectTrigger>
@@ -132,7 +121,7 @@ export default function GrammarCorrection() {
             </div>
 
             {mode === "professional" && (
-              <div className="space-y-2">
+              <div>
                 <Label>Tone</Label>
                 <Select value={tone} onValueChange={setTone}>
                   <SelectTrigger>
@@ -148,17 +137,14 @@ export default function GrammarCorrection() {
             )}
           </div>
 
-          {/* CTA BUTTON */}
           <Button
             onClick={handleCorrect}
             disabled={loading || !inputText.trim()}
-            size="lg"
-            className="w-full text-base shadow-md hover:shadow-xl transition-all"
+            className="gc-button"
           >
             {loading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Improving your text...
+                <Loader2 className="spin" /> Improving your text...
               </>
             ) : (
               "Correct My Text"
@@ -167,55 +153,35 @@ export default function GrammarCorrection() {
         </CardContent>
       </Card>
 
-      {/* RESULT */}
       {result && (
-        <Card className="border-green-200 bg-green-50/60 animate-in fade-in slide-in-from-bottom-3">
+        <Card className="gc-result">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-green-700">
-              <CheckCircle2 className="w-5 h-5" />
-              Corrected Result
+            <CardTitle className="gc-result-title">
+              <CheckCircle2 /> Corrected Result
             </CardTitle>
           </CardHeader>
 
-          <CardContent className="space-y-6">
-            <div className="p-5 bg-white rounded-lg border text-base leading-relaxed">
-              {result.corrected_text}
-            </div>
+          <CardContent className="gc-result-content">
+            <div className="gc-output">{result.corrected_text}</div>
 
             {result.explanation?.length > 0 && (
               <div>
-                <h4 className="font-semibold flex items-center gap-2 mb-2">
-                  <Lightbulb className="w-4 h-4 text-yellow-600" />
-                  What changed
+                <h4 className="gc-section-title">
+                  <Lightbulb /> What changed
                 </h4>
-                <ul className="list-disc ml-6 text-sm text-muted-foreground space-y-1">
-                  {result.explanation.map((exp: string, i: number) => (
-                    <li key={i}>{exp}</li>
+                <ul>
+                  {result.explanation.map((e: string, i: number) => (
+                    <li key={i}>{e}</li>
                   ))}
                 </ul>
               </div>
             )}
 
-            {result.alternatives?.length > 0 && (
-              <div>
-                <h4 className="font-semibold mb-2">Alternative Versions</h4>
-                <div className="space-y-2">
-                  {result.alternatives.map((alt: string, i: number) => (
-                    <div
-                      key={i}
-                      className="p-3 bg-white rounded border text-sm"
-                    >
-                      {alt}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="flex justify-between text-xs text-muted-foreground border-t pt-3">
+            <div className="gc-meta">
               <span>Tone: {result.tone}</span>
               <span>
-                Confidence: {Math.round((result.confidence_score || 0) * 100)}%
+                Confidence:{" "}
+                {Math.round((result.confidence_score || 0) * 100)}%
               </span>
             </div>
           </CardContent>

@@ -26,20 +26,23 @@ import {
 } from "lucide-react";
 import { storage, UserPreferences } from "@/lib/storage";
 import { useToast } from "@/hooks/use-toast";
+import "../styles/Profile.css";
 
 export default function Profile() {
   const { toast } = useToast();
 
   const [preferences, setPreferences] = useState<UserPreferences>(() => {
     const saved = storage.getPreferences();
-    return saved ?? { tone: "neutral", domain: "general", level: "intermediate" };
+    return saved ?? {
+      tone: "neutral",
+      domain: "general",
+      level: "intermediate",
+    };
   });
 
   const savePreferences = () => {
     storage.setPreferences(preferences);
-    toast({
-      title: "Preferences saved ✨",
-    });
+    toast({ title: "Preferences saved ✨" });
   };
 
   const clearAllData = () => {
@@ -62,34 +65,32 @@ export default function Profile() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10 space-y-8">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl md:text-4xl font-bold flex items-center justify-center gap-2">
-          <Sparkles className="text-primary" />
-          Profile & Preferences
+    <div className="profile-root">
+      <div className="profile-header">
+        <h1 className="profile-title">
+          <Sparkles /> Profile & Preferences
         </h1>
-        <p className="text-muted-foreground">
+        <p className="profile-subtitle">
           Personalize ProWriter to match your communication style
         </p>
       </div>
 
-      <Card className="shadow-lg">
+      <Card className="profile-card">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="w-5 h-5" />
-            Your Preferences
+          <CardTitle className="profile-card-title">
+            <User /> Your Preferences
           </CardTitle>
           <CardDescription>
             These settings guide how ProWriter responds to you
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="grid md:grid-cols-2 gap-6">
-          <div className="space-y-2">
+        <CardContent className="profile-form">
+          <div className="profile-field">
             <Label>Preferred Tone</Label>
             <Select
               value={preferences.tone}
-              onValueChange={(v: import("@/lib/storage").UserPreferences["tone"]) =>
+              onValueChange={(v: UserPreferences["tone"]) =>
                 setPreferences({ ...preferences, tone: v })
               }
             >
@@ -104,11 +105,11 @@ export default function Profile() {
             </Select>
           </div>
 
-          <div className="space-y-2">
+          <div className="profile-field">
             <Label>Work Domain</Label>
             <Select
               value={preferences.domain}
-              onValueChange={(v: import("@/lib/storage").UserPreferences["domain"]) =>
+              onValueChange={(v: UserPreferences["domain"]) =>
                 setPreferences({ ...preferences, domain: v })
               }
             >
@@ -125,11 +126,11 @@ export default function Profile() {
             </Select>
           </div>
 
-          <div className="space-y-2 md:col-span-2">
+          <div className="profile-field profile-span">
             <Label>English Level</Label>
             <Select
               value={preferences.level}
-              onValueChange={(v: import("@/lib/storage").UserPreferences["level"]) =>
+              onValueChange={(v: UserPreferences["level"]) =>
                 setPreferences({ ...preferences, level: v })
               }
             >
@@ -144,24 +145,19 @@ export default function Profile() {
             </Select>
           </div>
 
-          <div className="md:col-span-2 pt-4">
-            <Button
-              onClick={savePreferences}
-              size="lg"
-              className="w-full"
-            >
-              <Save className="w-4 h-4 mr-2" />
+          <div className="profile-actions">
+            <Button onClick={savePreferences} size="lg">
+              <Save />
               Save Preferences
             </Button>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="border-red-200 bg-red-50/40">
+      <Card className="danger-card">
         <CardHeader>
-          <CardTitle className="text-red-700 flex items-center gap-2">
-            <Trash2 className="w-5 h-5" />
-            Data Management
+          <CardTitle className="danger-title">
+            <Trash2 /> Data Management
           </CardTitle>
           <CardDescription>
             Permanently remove all locally stored data
@@ -170,7 +166,7 @@ export default function Profile() {
         <CardContent>
           <Button
             variant="destructive"
-            className="w-full"
+            className="danger-btn"
             onClick={clearAllData}
           >
             Clear All Data
@@ -178,10 +174,10 @@ export default function Profile() {
         </CardContent>
       </Card>
 
-      <Card className="bg-blue-50 border-blue-200">
-        <CardContent className="pt-6 flex gap-3">
-          <ShieldCheck className="w-5 h-5 text-blue-700 mt-0.5" />
-          <p className="text-sm text-blue-900 leading-relaxed">
+      <Card className="privacy-card">
+        <CardContent className="privacy-content">
+          <ShieldCheck />
+          <p>
             <strong>Privacy first.</strong> All preferences, streaks, and
             practice data are stored locally in your browser. No personal
             data is saved on our servers.

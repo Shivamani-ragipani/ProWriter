@@ -1,0 +1,167 @@
+.wp-root {
+  max-width: 1200px;
+  margin: auto;
+  padding: 48px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.wp-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 2.2rem;
+  justify-content: center;
+}
+
+.wp-start-content,
+.wp-chat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wp-scenario {
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--muted));
+  padding: 14px;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.wp-chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wp-chat-box {
+  height: 420px;
+  overflow-y: auto;
+  background: hsl(var(--muted));
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wp-chat-empty {
+  text-align: center;
+  margin-top: 140px;
+  color: hsl(var(--muted-foreground));
+}
+
+.wp-msg-row {
+  display: flex;
+}
+
+.wp-msg-row.user {
+  justify-content: flex-end;
+}
+
+.wp-msg-row.assistant {
+  justify-content: flex-start;
+}
+
+.wp-msg {
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  background: white;
+  border: 1px solid hsl(var(--border));
+}
+
+.wp-msg-row.user .wp-msg {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: none;
+}
+
+.wp-msg.loading svg {
+  animation: spin 1s linear infinite;
+}
+
+.wp-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wp-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.wp-feedback-card {
+  background: hsl(270 90% 96%);
+  border: 1px solid hsl(270 80% 85%);
+}
+
+.wp-feedback-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wp-feedback-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.wp-scores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.wp-score > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.wp-bar {
+  height: 8px;
+  background: hsl(var(--border));
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.wp-bar-fill {
+  height: 100%;
+  background: hsl(270 70% 55%);
+}
+
+.wp-feedback-actions {
+  display: flex;
+  gap: 10px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .wp-chat-box {
+    height: 360px;
+  }
+
+  .wp-actions,
+  .wp-feedback-actions {
+    flex-direction: column;
+  }
+}

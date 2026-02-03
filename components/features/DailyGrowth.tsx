@@ -4,7 +4,6 @@ import { useState, useEffect, ChangeEvent } from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -19,6 +18,7 @@ import {
 } from "lucide-react";
 import { storage } from "@/lib/storage";
 import { useToast } from "@/hooks/use-toast";
+import "../styles/daily-growth.css";
 
 interface Task {
   id: string;
@@ -139,38 +139,37 @@ export default function DailyGrowth() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10 space-y-8">
-      <div className="text-center space-y-3">
-        <h1 className="text-3xl md:text-4xl font-bold flex items-center justify-center gap-2">
-          <Sparkles className="text-primary" />
-          Daily Growth
+    <div className="daily-root">
+      <div className="daily-header">
+        <h1 className="daily-title">
+          <Sparkles /> Daily Growth
         </h1>
-        <p className="text-muted-foreground">
+        <p className="daily-subtitle">
           Short daily exercises to sharpen your English
         </p>
       </div>
 
-      <Card className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-        <CardContent className="py-6 flex items-center justify-between">
+      <Card className="streak-card">
+        <CardContent className="streak-content">
           <div>
-            <p className="text-sm opacity-90">Current Streak</p>
-            <p className="text-3xl font-bold">{streak} 🔥</p>
+            <p className="streak-label">Current Streak</p>
+            <p className="streak-value">{streak} 🔥</p>
           </div>
-          <Trophy className="w-10 h-10 opacity-90" />
+          <Trophy />
         </CardContent>
       </Card>
 
-      <Card>
-        <CardContent className="pt-6 space-y-2">
-          <div className="flex justify-between text-sm">
+      <Card className="progress-card">
+        <CardContent>
+          <div className="progress-header">
             <span>Today’s Progress</span>
             <span>
               {completedToday} / {tasks.length}
             </span>
           </div>
-          <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
+          <div className="progress-bar">
             <div
-              className="h-2 bg-gradient-to-r from-primary to-purple-500 transition-all"
+              className="progress-fill"
               style={{
                 width: `${
                   tasks.length
@@ -184,43 +183,35 @@ export default function DailyGrowth() {
       </Card>
 
       {loading ? (
-        <Card>
-          <CardContent className="py-16 text-center">
-            <Loader2 className="w-8 h-8 animate-spin mx-auto mb-3" />
-            <p className="text-muted-foreground">
-              Preparing today’s challenges…
-            </p>
+        <Card className="loading-card">
+          <CardContent>
+            <Loader2 className="spin" />
+            <p>Preparing today’s challenges…</p>
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-5">
+        <div className="tasks-wrapper">
           {tasks.map((task, i) => (
             <Card
               key={task.id}
-              className={`transition-all ${
-                task.completed
-                  ? "border-green-300 bg-green-50/50"
-                  : "hover:shadow-md"
+              className={`task-card ${
+                task.completed ? "task-complete" : ""
               }`}
             >
               <CardHeader>
-                <CardTitle className="text-base flex items-center justify-between">
+                <CardTitle className="task-title">
                   <span>
                     Task {i + 1} · {task.instruction}
                   </span>
-                  {task.completed && (
-                    <CheckCircle2 className="w-5 h-5 text-green-600" />
-                  )}
+                  {task.completed && <CheckCircle2 />}
                 </CardTitle>
               </CardHeader>
 
-              <CardContent className="space-y-4">
-                <div className="p-4 rounded-lg bg-muted text-sm leading-relaxed">
-                  {task.content}
-                </div>
+              <CardContent className="task-body">
+                <div className="task-content">{task.content}</div>
 
                 {task.type === "choice" && task.options && (
-                  <div className="grid sm:grid-cols-2 gap-2">
+                  <div className="choices-grid">
                     {task.options.map((opt) => (
                       <Button
                         key={opt}
@@ -251,7 +242,7 @@ export default function DailyGrowth() {
 
                 {!task.completed && (
                   <Button
-                    className="w-full"
+                    className="submit-btn"
                     disabled={!task.userAnswer}
                     onClick={() => checkAnswer(task.id)}
                   >
@@ -260,7 +251,7 @@ export default function DailyGrowth() {
                 )}
 
                 {task.completed && (
-                  <p className="text-sm text-muted-foreground">
+                  <p className="answer-text">
                     Answer: <strong>{task.answer}</strong>
                   </p>
                 )}
@@ -273,11 +264,11 @@ export default function DailyGrowth() {
       {tasks.length > 0 && (
         <Button
           variant="outline"
-          className="w-full"
+          className="refresh-btn"
           onClick={generateTasks}
           disabled={loading}
         >
-          <RefreshCw className="w-4 h-4 mr-2" />
+          <RefreshCw />
           Generate New Tasks
         </Button>
       )}

@@ -1,0 +1,151 @@
+/* ================================
+   ROOT / GLOBAL
+================================ */
+.app-root {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef2ff, #f5f3ff, #faf5ff);
+  font-family: "Inter", sans-serif;
+}
+
+/* ================================
+   HEADER
+================================ */
+.app-header {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #4f46e5, #9333ea);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35);
+}
+
+.app-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.app-subtitle {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* ================================
+   MAIN CONTENT
+================================ */
+.app-content {
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px 24px;
+}
+
+/* ================================
+   TABS CONTAINER
+================================ */
+.tabs-container {
+  max-width: 520px;
+  height: 60px;
+  margin: 0 auto 36px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 6px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+}
+
+/* ================================
+   TAB BUTTON
+================================ */
+.tab-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 12px;
+  color: #4b5563;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.tab-btn:hover {
+  background: rgba(99, 102, 241, 0.08);
+}
+
+/* Active Tab */
+.tab-btn[data-state="active"] {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(99, 102, 241, 0.35);
+  transform: scale(1.03);
+}
+
+/* ================================
+   TAB CONTENT
+================================ */
+.tab-content {
+  margin-top: 20px;
+}
+
+/* Animate active content ONLY */
+[data-state="active"] {
+  animation: fadeUp 0.35s ease-in-out;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+================================ */
+@media (max-width: 640px) {
+  .header-inner {
+    padding: 16px;
+  }
+
+  .app-title {
+    font-size: 1.4rem;
+  }
+
+  .tabs-container {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 6px;
+  }
+
+  .tab-btn span {
+    display: none;
+  }
+
+  .app-content {
+    padding: 32px 16px;
+  }
+}

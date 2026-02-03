@@ -1,0 +1,147 @@
+.daily-root {
+  max-width: 1100px;
+  margin: auto;
+  padding: 48px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.daily-header {
+  text-align: center;
+}
+
+.daily-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.daily-subtitle {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.streak-card {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+}
+
+.streak-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.streak-label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.streak-value {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.progress-card span {
+  font-size: 0.85rem;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #a855f7);
+  transition: width 0.3s ease;
+}
+
+.loading-card {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tasks-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.task-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+}
+
+.task-complete {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
+.task-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.task-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.task-content {
+  background: #f9fafb;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.choices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.submit-btn {
+  width: 100%;
+}
+
+.answer-text {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.refresh-btn {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}

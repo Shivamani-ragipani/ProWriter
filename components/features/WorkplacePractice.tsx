@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { WORKPLACE_SCENARIOS } from "@/lib/scenarios";
 import { useToast } from "@/hooks/use-toast";
+import "../styles/WorkplacePractice.css";
 
 interface Message {
   role: "user" | "assistant";
@@ -54,10 +55,7 @@ export default function WorkplacePractice() {
 
   const startPractice = () => {
     if (!selectedScenario) {
-      toast({
-        title: "Select a scenario",
-        variant: "destructive",
-      });
+      toast({ title: "Select a scenario", variant: "destructive" });
       return;
     }
     setStarted(true);
@@ -131,21 +129,20 @@ export default function WorkplacePractice() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 space-y-8">
+    <div className="wp-root">
       {!started ? (
-        <Card className="shadow-lg">
-          <CardHeader className="text-center space-y-2">
-            <CardTitle className="text-3xl flex items-center justify-center gap-2">
-              <Sparkles className="text-primary" />
-              Workplace Practice
+        <Card className="wp-start-card">
+          <CardHeader className="wp-start-header">
+            <CardTitle className="wp-title">
+              <Sparkles /> Workplace Practice
             </CardTitle>
             <CardDescription>
               Simulate real conversations and get instant feedback
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-6">
-            <div className="space-y-2">
+          <CardContent className="wp-start-content">
+            <div className="wp-field">
               <Label>Select Scenario</Label>
               <Select
                 value={selectedScenario}
@@ -165,31 +162,25 @@ export default function WorkplacePractice() {
             </div>
 
             {scenario && (
-              <div className="rounded-xl border bg-muted p-4 space-y-2">
-                <h4 className="font-semibold">{scenario.title}</h4>
-                <p className="text-sm text-muted-foreground">
-                  {scenario.description}
-                </p>
-                <p className="text-sm">
+              <div className="wp-scenario">
+                <h4>{scenario.title}</h4>
+                <p>{scenario.description}</p>
+                <p>
                   <strong>Context:</strong> {scenario.context}
                 </p>
               </div>
             )}
 
-            <Button
-              size="lg"
-              className="w-full"
-              onClick={startPractice}
-            >
-              <MessageSquare className="w-4 h-4 mr-2" />
+            <Button size="lg" onClick={startPractice}>
+              <MessageSquare />
               Start Conversation
             </Button>
           </CardContent>
         </Card>
       ) : (
         <>
-          <Card className="shadow-lg">
-            <CardHeader className="flex-row items-center justify-between">
+          <Card className="wp-chat-card">
+            <CardHeader className="wp-chat-header">
               <div>
                 <CardTitle>{scenario?.title}</CardTitle>
                 <CardDescription>
@@ -201,10 +192,10 @@ export default function WorkplacePractice() {
               </Button>
             </CardHeader>
 
-            <CardContent className="space-y-4">
-              <div className="h-[420px] overflow-y-auto rounded-xl bg-muted p-4 space-y-4">
+            <CardContent className="wp-chat-content">
+              <div className="wp-chat-box">
                 {messages.length === 0 && (
-                  <p className="text-center text-muted-foreground mt-20">
+                  <p className="wp-chat-empty">
                     Start typing to begin the conversation
                   </p>
                 )}
@@ -212,41 +203,30 @@ export default function WorkplacePractice() {
                 {messages.map((m, i) => (
                   <div
                     key={i}
-                    className={`flex ${
-                      m.role === "user"
-                        ? "justify-end"
-                        : "justify-start"
+                    className={`wp-msg-row ${
+                      m.role === "user" ? "user" : "assistant"
                     }`}
                   >
-                    <div
-                      className={`max-w-[75%] rounded-2xl px-4 py-2 text-sm leading-relaxed ${
-                        m.role === "user"
-                          ? "bg-primary text-white"
-                          : "bg-white border"
-                      }`}
-                    >
-                      {m.content}
-                    </div>
+                    <div className="wp-msg">{m.content}</div>
                   </div>
                 ))}
 
                 {loading && (
-                  <div className="flex justify-start">
-                    <div className="bg-white border rounded-xl px-3 py-2">
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                  <div className="wp-msg-row assistant">
+                    <div className="wp-msg loading">
+                      <Loader2 />
                     </div>
                   </div>
                 )}
               </div>
 
               {!feedback && (
-                <div className="space-y-3">
+                <div className="wp-input-area">
                   <Textarea
                     value={userInput}
-                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setUserInput(e.target.value)}
+                    onChange={(e) => setUserInput(e.target.value)}
                     placeholder="Type your response…"
-                    className="min-h-[90px]"
-                    onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+                    onKeyDown={(e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
                         sendMessage();
@@ -254,14 +234,12 @@ export default function WorkplacePractice() {
                     }}
                   />
 
-                  <div className="flex gap-2">
+                  <div className="wp-actions">
                     <Button
-                      className="flex-1"
                       onClick={sendMessage}
                       disabled={loading || !userInput.trim()}
                     >
-                      <Send className="w-4 h-4 mr-2" />
-                      Send
+                      <Send /> Send
                     </Button>
                     <Button
                       variant="outline"
@@ -277,50 +255,40 @@ export default function WorkplacePractice() {
           </Card>
 
           {feedback && (
-            <Card className="border-purple-200 bg-purple-50/60 shadow-md">
+            <Card className="wp-feedback-card">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BarChart3 className="text-purple-600" />
-                  Performance Review
+                <CardTitle className="wp-feedback-title">
+                  <BarChart3 /> Performance Review
                 </CardTitle>
               </CardHeader>
 
-              <CardContent className="space-y-6">
+              <CardContent className="wp-feedback-content">
                 <p>{feedback.feedback}</p>
 
                 {feedback.scores && (
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {Object.entries(feedback.scores as Record<string, number>).map(
-                      ([k, v]: [string, number]) => (
-                        <div key={k} className="space-y-1">
-                          <div className="flex justify-between text-sm">
-                            <span className="capitalize">{k}</span>
-                            <span>{v}/100</span>
-                          </div>
-                          <div className="h-2 bg-muted rounded-full">
-                            <div
-                              className="h-2 rounded-full bg-purple-600"
-                              style={{ width: `${v}%` }}
-                            />
-                          </div>
+                  <div className="wp-scores">
+                    {Object.entries(feedback.scores).map(([k, v]) => (
+                      <div key={k} className="wp-score">
+                        <div>
+                          <span>{k}</span>
+                          <span>{v}/100</span>
                         </div>
-                      )
-                    )}
+                        <div className="wp-bar">
+                          <div
+                            className="wp-bar-fill"
+                            style={{ width: `${v}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
 
-                <div className="flex gap-2 pt-4 border-t">
-                  <Button
-                    variant="outline"
-                    className="flex-1"
-                    onClick={copyFinalMessage}
-                  >
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy Message
+                <div className="wp-feedback-actions">
+                  <Button variant="outline" onClick={copyFinalMessage}>
+                    <Copy /> Copy Message
                   </Button>
-                  <Button className="flex-1" onClick={reset}>
-                    Try Another
-                  </Button>
+                  <Button onClick={reset}>Try Another</Button>
                 </div>
               </CardContent>
             </Card>
